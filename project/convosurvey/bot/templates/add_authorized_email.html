@@ -1,0 +1,42 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Add Authorized Email for {{ survey.name }}</h2>
+    <form method="post" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+        
+        <!-- Display form fields with a bit of spacing and proper alignment -->
+        <div class="form-group">
+            {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.auto_id }}" class="form-control"  />
+            {% if field.errors %}
+                <div class="alert alert-danger mt-2">
+                    {{ field.errors.0 }}
+                </div>
+            {% endif %}
+            <br>
+            {% endfor %}
+        </div>
+        
+        <!-- Stylish submit button -->
+        <button type="submit" class="btn btn-primary">Add Email</button>
+    </form> 
+
+    <!-- Section for displaying authorized emails -->
+<div class="mt-4 bg-light p-4 rounded shadow-sm" style="max-height: 200px; overflow-y: scroll;">
+    <h4>Authorized Emails:</h4>
+    <div class="d-flex flex-column">
+        {% for email_obj in authorized_emails %}
+        <div class="email-item p-2 rounded bg-white border shadow-sm">
+            {{ email_obj.email }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+    
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-5">
+  <div class="row">
+    <!-- Left Sidebar -->
+    <div class="col-md-3">
+      <h4>Your Surveys</h4>
+      <ul class="list-group">
+        {% for survey in user_surveys %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'survey_detail' survey.id %}" title="Survey Details">{{ survey.name }}</a>
+          <a href="{% url 'survey_detail' survey.id %}" title="Survey Details">
+              <i class="fas fa-pencil-alt text-primary"></i>
+          </a>
+      </li>
+        {% endfor %}
+    </ul>
+    </div>
+
+
+    <div class="col-md-9">
+<form method="post" class="container ">
+  {% csrf_token %}
+  <h1 class="mb-4 text-center">NEW SURVEYBOT </h1>
+
+  <!-- Survey Name Input -->
+  <div class="form-group">
+      <label for="surveyName">Survey Name:</label>
+      <input type="text" class="form-control" id="surveyName" name="name" placeholder="Enter survey name">
+    
+      <!-- Display errors for the name field -->
+    {% if form.name.errors %}
+        <div class="error mt-2">
+            {{ form.name.errors }}
+        </div>
+    {% endif %}
+  
+
+  
+    </div>
+
+  <h3 class="mt-4 mb-3">Questions</h3>
+  <div id="questionsContainer" class="mb-3">
+      <!-- Dynamic questions will be added here -->
+  </div>
+
+  <button type="button" id="addQuestionButton" class="btn btn-primary mb-3">Add Question</button>
+  <br />
+
+  <input type="submit" value="Create Survey" class="btn btn-success" />
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let questionCounter = 0; // Initialize counter
+
+    let addButton = document.getElementById("addQuestionButton");
+
+    if (addButton) {
+      addButton.addEventListener("click", function () {
+        let questionsContainer = document.getElementById("questionsContainer");
+        let newQuestionDiv = document.createElement("div");
+        newQuestionDiv.className = "form-group"; // Assign Bootstrap's 'form-group' class to the container div
+
+        let questionLabel = document.createElement("label");
+        questionLabel.innerText = "Question:";
+
+        let questionInput = document.createElement("input");
+        questionInput.type = "text";
+        questionInput.className = "form-control"; // Assign Bootstrap's 'form-control' class to the input
+
+        // Assign a unique name attribute to the input
+        questionInput.name = "question_" + questionCounter;
+
+        // Log the unique question ID to the console
+        console.log("Generated Question ID: " + questionInput.name);
+
+        newQuestionDiv.appendChild(questionLabel);
+        newQuestionDiv.appendChild(questionInput);
+        questionsContainer.appendChild(newQuestionDiv);
+
+        questionCounter++; // Increment the counter for the next question
+      });
+    }
+  });
+</script>
+</div>
+</div>
+</div>
+{% endblock %}

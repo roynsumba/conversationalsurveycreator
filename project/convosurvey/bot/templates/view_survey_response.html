@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Responses from {{ respondent.email }}</h2>
+    
+    <ul class="list-group mt-4">
+        {% for response in question_responses %}
+            <li class="list-group-item">
+                <strong>Question:</strong> {{ response.question.text }} <br>
+                <strong>Response:</strong> {{ response.response_data }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

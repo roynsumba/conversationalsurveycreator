@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2"> <!-- Center the form on larger screens -->
+            <div class="card"> <!-- Add card for better styling -->
+                <div class="card-header">
+                    <h3>Edit Survey: {{ form.instance.name }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- For each field in the form, render it with Bootstrap styles -->
+                        {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control" id="{{ field.auto_id }}" value="{{ field.value|default:'' }}" required>
+                        </div>
+                        {% endfor %}
+
+                        <button type="submit" class="btn btn-success">Update Survey</button>
+                        <a href="{% url 'survey_detail' form.instance.id %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

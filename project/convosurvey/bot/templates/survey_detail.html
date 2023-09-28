@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <!-- Survey Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">{{ survey.name }}</h2>
+        <div>
+            <a href="{% url 'edit_survey' survey.id %}" class="btn btn-primary mr-2">Edit Survey</a>
+            <a href="{% url 'delete_survey' survey.id %}" class="btn btn-danger" >Delete Survey</a>
+        </div>
+    </div>
+
+    <!-- Questions List -->
+    <div style="max-height: 150px; overflow-y: auto;"> <!-- Added div for fixed height and scrolling -->
+        <ul class="list-group">
+            {% for question in questions %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ question.text }}
+                    <div>
+                        <a href="{% url 'edit_question' question.id %}" class="btn btn-sm btn-primary mr-2">Edit</a>
+                        <a href="{% url 'delete_question' question.id %}" class="btn btn-sm btn-danger">Delete</a>
+
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div> <!-- End of added div -->
+
+    <br>
+   <!-- Button Group -->
+<div class="d-flex justify-content-between align-items-center mt-3"> <!-- Ensure there's space between this div and the above content -->
+    <!-- Add Question Button -->
+    <div>
+        <a href="{% url 'add_question' survey.id %}" class="btn btn-success">Add Question</a>
+    </div>
+
+    <!-- Other Buttons -->
+    <div>
+        <!-- Try SurveyBot Button -->
+        <a href="{% url 'chatbot_survey_forcreator' survey.id %}" class="btn btn-info">Try SurveyBot</a>
+        
+        <!-- Add Authorized Email Button -->
+        <a href="{% url 'add_authorized_email' survey.id %}" class="btn btn-warning">Add Authorized Email</a>
+    </div>
+</div>
+
+
+</div>
+
+<!-- Start of Survey Respondents Section -->
+<div class="container mt-5" style=" max-height: 200px; overflow-y: auto;">
+    <h5>Users who answered the survey:</h5>
+    <ul class="list-group">
+        {% for user in survey_respondents %}
+            <li class="list-group-item">
+                <a href="{% url 'view_survey_response' survey.id user.id %}">{{ user.email }}</a>  <!-- Assuming user's email field is 'email' -->
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

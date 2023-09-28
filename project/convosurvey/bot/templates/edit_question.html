@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2"> <!-- Center the form on larger screens -->
+            <div class="card"> <!-- Add card for better styling -->
+                <div class="card-header">
+                    <h3>Edit Question</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group"> <!-- Add form-group for better spacing -->
+                            <label for="id_text">{{ form.text.label }}</label>
+                            <input type="text" name="text" class="form-control" id="id_text" value="{{ form.text.value|default:'' }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Update Question</button>
+                        <a href="{% url 'survey_detail' form.instance.survey.id %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
